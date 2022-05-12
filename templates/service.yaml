@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-headless
+  labels:
+    {{- include "..labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.service.pyrsia.port }}
+      targetPort: pyrsia-node
+      protocol: TCP
+      name: pyrsia-node
+    - port: {{.Values.service.libp2p.port}}
+      targetPort: libp2p-node
+      protocol: TCP
+      name: libp2p-connection
+  selector:
+    {{- include "..selectorLabels" . | nindent 4 }}
